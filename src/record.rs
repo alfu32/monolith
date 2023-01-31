@@ -7,12 +7,12 @@ use std::boxed::{Box};
 
     #[derive(Serialize, Deserialize, /*Copy, */Clone, Debug)]
     pub struct Record {
-        id: u128,
-        created: u64,
-        updated: u64,
-        deleted: u64,
-        owner:String,
-        tag:String,
+        pub(crate) id: u128,
+        pub(crate) created: u64,
+        pub(crate) updated: u64,
+        pub(crate) deleted: u64,
+        pub(crate) owner:String,
+        pub(crate) tag:String,
         data: String,
         checksum: String,
     }

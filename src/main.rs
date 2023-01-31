@@ -1,4 +1,6 @@
 mod record;
+mod monolith;
+
 use serde::{Deserialize, Serialize};
 use csv::{Reader, Writer};
 
