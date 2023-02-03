@@ -1,2 +1,8 @@
 /target
 .idea
+test-data
+**/*.db
+**/*.idx
+*.db
+*.idx
+test*.file
