@@ -1,6 +1,8 @@
 # Intent
 (_written by me_)
+
 I'm giving you the abriged version of a new database engine written in rust :
+
 ```rust
 #[derive(Debug, Clone)]
 pub struct MonolithBackend {
@@ -33,8 +35,10 @@ I need the following from you:
 - a presentation part for the webpage
 - the text for the api documentation.
 
-# What our marketing department has come up with
-(_description authored by our tiny friend ChatGPT_)
+
+
+# The readme
+_description authored by guess who (our-tiny-friend-ChatGPT)_
 
 
 ## Introducing Monolith: A Fast Object Storage Engine
@@ -44,7 +48,6 @@ Tired of slow and bulky storage engines? Look no further than Monolith! Our engi
 With its small and portable design, Monolith is easy to integrate into any project. And with planned support for a TCP server and plugins, you can trigger programmed actions on read, create, update, and delete. Plus, with a planned integration of a SQL99 script engine, you can take your storage to the next level.
 
 Get started with Monolith today and experience lightning-fast writes and reads. Join us in exploring the limits of object storage and see what the monolith from the Space Odyssey series by Arthur C. Clarke has inspired.
-(_a bit childish isn't it ?_)
 
 
 
