@@ -1,5 +1,43 @@
-# Introducing Monolith: A Fast Object Storage Engine
+# Intent
+(_written by me_)
+I'm giving you the abriged version of a new database engine written in rust :
+```rust
+#[derive(Debug, Clone)]
+pub struct MonolithBackend {
+    pub(crate) name: String,
+    data_path: String,
+    /// index_file: File,
+    /// data_file: File,
+    index_path: String,
+    pub(crate) index_cache: Vec<Index>,
+}
+impl MonolithBackend {
+  pub fn open(base_path: &str, name: &str) -> Self
+  pub fn close(&mut self)
+  fn read_all_index(&mut self) -> Result<Vec<Record>, Box<dyn std::error::Error>>
+  fn write_all_index(&mut self)
+  pub fn get_from_index(&self, p0: fn(&Index) -> bool) -> Vec<Index>
+  pub fn read_record_at_index(&self, ix: Index) -> Result<Record, Box<dyn std::error::Error>>
+  pub fn read_all_matching(&self, p0: fn(&Index) -> bool) -> Vec<Record>
+  pub fn read_all(&self) -> Result<Vec<Record>, Box<dyn std::error::Error>>
+  pub fn write(&mut self, r: Record) -> Result<(), Box<dyn std::error::Error>>
+}
+```
+The database engine has the name monolith ( making a reference to the Monolith from the Space Odyssey series of Arthur C. Clarke ).
+
+The project has for aim to produce a small, portable minimal object storage engine, optimized for fast writes and fast reads.
+For now it has only a CLI, but at a later stage we'll implement a TCP server and plugins that will trigger programmed actions on read, on create,on update and on delete. At a later stage we will integrate a sql99 script engine.
+
+I need the following from you:
+- a readme.md for the repository.
+- a presentation part for the webpage
+- the text for the api documentation.
+
+# What our marketing department has come up with
 (_description authored by our tiny friend ChatGPT_)
+
+
+## Introducing Monolith: A Fast Object Storage Engine
 
 Tired of slow and bulky storage engines? Look no further than Monolith! Our engine is written in Rust and optimized for fast writes and reads, making it the perfect solution for your object storage needs.
 
@@ -10,10 +48,10 @@ Get started with Monolith today and experience lightning-fast writes and reads. 
 
 
 
-# Monolith: A Fast Object Storage Engine
+## Monolith: A Fast Object Storage Engine
 Welcome to Monolith, an object storage engine written in Rust and optimized for fast writes and reads. Monolith is inspired by the monolith from the Space Odyssey series by Arthur C. Clarke and aims to be a small, portable, and minimal engine.
 
-# Features
+## Features
 * Small and portable
 * Fast writes and reads
 * Command-line interface (CLI)
@@ -21,17 +59,17 @@ Welcome to Monolith, an object storage engine written in Rust and optimized for 
 * SQL99 script engine (planned)
 
 
-# Getting Started
+## Getting Started
 The MonolithBackend struct is the main component of the engine. To use the engine, call the open method with the base path and the name of the database. You can then interact with the database through methods such as write, read_all, and get_from_index.
 
-# Contributing
+## Contributing
 We welcome contributions to Monolith. If you're interested in contributing, please take a look at our contributing guidelines.
 
-# License
+## License
 Monolith is licensed under the MIT License.
 
-## API Documentation
-# MonolithBackend
+### API Documentation
+## MonolithBackend
 The MonolithBackend struct is the main component of the Monolith object storage engine. It contains the following fields:
 
 - name: String: The name of the database.
@@ -39,7 +77,7 @@ The MonolithBackend struct is the main component of the Monolith object storage 
 - index_path: String: The path to the index file.
 - index_cache: Vec<Index>: A cache of the indices in the database.
 
-## Methods
+### Methods
 open(base_path: &str, name: &str) -> Self
 Opens a Monolith database with the given base path and name.
 
