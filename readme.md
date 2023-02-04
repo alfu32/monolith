@@ -1,12 +1,12 @@
 # Introducing Monolith: A Fast Object Storage Engine
-(_authored by our tiny friend ChatGPT_)
+(_ description authored by our tiny friend ChatGPT _)
 
 Tired of slow and bulky storage engines? Look no further than Monolith! Our engine is written in Rust and optimized for fast writes and reads, making it the perfect solution for your object storage needs.
 
 With its small and portable design, Monolith is easy to integrate into any project. And with planned support for a TCP server and plugins, you can trigger programmed actions on read, create, update, and delete. Plus, with a planned integration of a SQL99 script engine, you can take your storage to the next level.
 
 Get started with Monolith today and experience lightning-fast writes and reads. Join us in exploring the limits of object storage and see what the monolith from the Space Odyssey series by Arthur C. Clarke has inspired.
-(_a bit naive isn't it ?_)
+(_a bit childish isn't it ?_)
 
 
 
