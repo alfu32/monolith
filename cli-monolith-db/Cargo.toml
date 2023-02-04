@@ -10,4 +10,4 @@ path="src/main.rs"
 
 [dependencies]
 clap = { version = "4.1.4", features = ["derive"] }
-lib_monolith_db = {path="../lib-monolith-db"}
+monolith_db = {path= "../monolith-db" }

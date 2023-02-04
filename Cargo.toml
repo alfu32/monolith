@@ -1,5 +1,5 @@
 [workspace]
 members = [
-    "lib-monolith-db",
+    "monolith-db",
     "cli-monolith-db"
 ]

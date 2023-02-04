@@ -1,12 +1,12 @@
-
 pub mod index;
 pub mod monolith;
 pub mod record;
+
 #[cfg(test)]
 mod tests {
     use std::fs;
     use std::fs::{File, OpenOptions};
-    use std::io::{Read, Seek, SeekFrom,Write};
+    use std::io::{Read, Seek, SeekFrom, Write};
 
     #[test]
     fn write_to_eof() {
@@ -34,7 +34,7 @@ mod tests {
             Err(e) => {
                 eprintln!("Couldn't open file: {}", e);
                 return;
-            },
+            }
         };
 
         file.seek(SeekFrom::Start(pos as u64)).unwrap();

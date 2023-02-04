@@ -58,16 +58,16 @@ echo "writing A10"
 A10=`cli-monolith-db dbtest create "this solution is crooked!"`
 echo "reading $A10"
 cli-monolith-db dbtest read $A10
+sleep 2
+echo "deleting $A10"
+cli-monolith-db dbtest delete $A10
 
+echo "writing A11"
+cli-monolith-db dbtest write "1;2;3;4;SYSTEM;system;nice socks"
+echo "reading $A11"
+A11=`cli-monolith-db dbtest read 1`
+echo "A11 is $A11"
 
-cli-monolith-db dbtest read 1675416517992552265
-cli-monolith-db dbtest read 1675416517994640166
-cli-monolith-db dbtest read 1675416517997904849
-cli-monolith-db dbtest read 1675416518000036257
-cli-monolith-db dbtest read 1675416518002329344
-cli-monolith-db dbtest read 1675416518004426419
-cli-monolith-db dbtest read 1675416518007667515
-cli-monolith-db dbtest read 1675416518011222566
-cli-monolith-db dbtest read 1675416518013573875
-cli-monolith-db dbtest read 1675416518015657264
-cli-monolith-db dbtest read 1675416518018040527
+cli-monolith-db dbtest read-all -- --json
+
+cli-monolith-db dbtest read-all -- --csv
