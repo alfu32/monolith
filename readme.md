@@ -1,5 +1,5 @@
 # Introducing Monolith: A Fast Object Storage Engine
-(_ description authored by our tiny friend ChatGPT _)
+(_description authored by our tiny friend ChatGPT_)
 
 Tired of slow and bulky storage engines? Look no further than Monolith! Our engine is written in Rust and optimized for fast writes and reads, making it the perfect solution for your object storage needs.
 
