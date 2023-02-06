@@ -6,3 +6,4 @@ test-data
 *.db
 *.idx
 test*.file
+*.log

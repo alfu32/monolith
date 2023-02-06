@@ -1,11 +1,11 @@
 // extern crate v8;
 
-use std::borrow::BorrowMut;
+
 use monolith_db::monolith::MonolithBackend;
 use monolith_db::record::Record;
-use monolith_db::index::Index;
+
 use std::env;
-use std::string::ToString;
+
 use clap::Parser;
 use std::io::Write;
 /// Search for a pattern in a file and display the lines that contain it.

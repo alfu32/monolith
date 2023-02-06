@@ -35,10 +35,30 @@ I need the following from you:
 - a presentation part for the webpage
 - the text for the api documentation.
 
+# Troubleshooting
+I had some trouble compiling becausse of cc error after adding tokio and deno_core.
+A fix ( from https://github.com/rust-lang/rust/issues/25289 )
 
+```bash
+sudo apt install gcc-multilib
+cargo clean
+cargo build
+```
+
+If the problem appears again
+
+```bash
+cargo clean
+cargo build
+```
+If you cannot `cargo clean`
+
+```bash
+sudo chown -R $USER:$USER target
+```
 
 # The readme
-_description authored by guess who (our-tiny-friend-ChatGPT)_
+_generated with ChatGPT_
 
 
 ## Introducing Monolith: A Fast Object Storage Engine
