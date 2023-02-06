@@ -77,7 +77,6 @@ impl Index {
 
 #[cfg(test)]
 mod tests {
-    use crate::index::lib_monolith::Index;
     use super::*;
 
     #[test]

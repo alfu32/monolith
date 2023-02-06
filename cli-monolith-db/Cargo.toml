@@ -10,4 +10,7 @@ path="src/main.rs"
 
 [dependencies]
 clap = { version = "4.1.4", features = ["derive"] }
+deno_core = "0.170.0"
+tokio = { version = "1.25.0", features = ["full"] }
 monolith_db = {path= "../monolith-db" }
+# v8 = "0.62.2"

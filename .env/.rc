@@ -1,0 +1,42 @@
+#!/bin/bash
+
+REL=$1
+ARCHVNDSYS=$2
+BUILD=$3
+
+if [ -n "$REL" ]; then
+  echo "using release $REL from arguments"
+else
+  REL=v0.62.2
+  echo "using default release $REL"
+fi
+
+if [ -n "$ARCHVNDSYS" ]; then
+  echo "using architecture $ARCHVNDSYS from arguments"
+else
+  ARCHVNDSYS=x86_64-unknown-linux-gnu
+  echo "using default ar cpu-arch/vendor/os $ARCHVNDSYS"
+fi
+
+if [ -n "$BUILD" ]; then
+  echo "BUILD is -n $BUILD"
+  echo "using build $BUILD from arguments"
+else
+  BUILD=debug
+  echo "using default build $BUILD"
+fi
+
+echo "using RUSTY_V8_ARCHIVE $RUSTY_V8_ARCHIVE"
+
+export RUSTY_V8_MIRROR=$HOME/.cache/rusty_v8
+export RUSTY_V8_ARCHIVE=$RUSTY_V8_MIRROR/$REL/librusty_v8_$BUILD\_$ARCHVNDSYS.a
+export PATH=$PATH:$(pwd)/target/$BUILD
+echo $PATH
+
+if [ ! -f $RUSTY_V8_ARCHIVE ];then
+    FILE=librusty_v8_$BUILD\_$ARCHVNDSYS.a
+    echo "file $REL/$FILE IS NOT in cache"
+    mkdir -p $RUSTY_V8_MIRROR/$REL
+    wget -O $RUSTY_V8_MIRROR/$REL/$FILE "https://github.com/denoland/rusty_v8/releases/download/$REL/$FILE"
+fi
+

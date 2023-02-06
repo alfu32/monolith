@@ -7,8 +7,11 @@ edition = "2021"
 [lib]
 
 [dependencies]
+deno_core = "0.170.0"
 #base64 = "0.21.0"
 #csv = "1.1.6"
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.91"
 sha256 = "1.1.1"
+tokio = { version = "1.25.0", features = ["full"] }
+# v8 = "0.62.2"

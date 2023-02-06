@@ -160,9 +160,6 @@ impl MonolithBackend {
 
 #[cfg(test)]
 mod tests {
-    use crate::index::lib_monolith::Index;
-    use crate::monolith::lib_monolith::MonolithBackend;
-    use crate::record::lib_monolith::Record;
     use super::*;
 
     #[test]
