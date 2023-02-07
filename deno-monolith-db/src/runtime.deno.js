@@ -30,6 +30,9 @@
         },
     };
     globalThis.monolith = {
+        open(dbname){
+            return ops.op_db_open(dbname)
+        },
         read(dbname,data){
             return ops.op_db_read(dbname,data)
         },

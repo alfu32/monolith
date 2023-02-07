@@ -1,11 +1,11 @@
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::{BufRead, BufReader, Read, Seek, SeekFrom, Write};
-use serde::{Deserialize, Serialize};
-use crate::index::Index;
-use crate::record::Record;
+use serde::{Deserialize, Serialize, Serializer};
+use crate::Index;
+use crate::Record;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone,Serialize,Deserialize)]
 pub struct MonolithBackend {
     pub(crate) name: String,
     data_path: String,

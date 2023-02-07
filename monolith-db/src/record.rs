@@ -4,58 +4,9 @@ use std::str;
 use std::boxed::Box;
 use std::io::Write;
 
-use crate::index::Index;
+use crate::{id128_new, Index};
+use crate::{DEFAULT_OWNER, DEFAULT_TAG, id128_parse, Record};
 
-#[derive(Serialize, Deserialize, /*Copy, */Clone, Debug, PartialEq)]
-pub struct Record {
-    pub id: u128,
-    pub created: u64,
-    pub updated: u64,
-    pub deleted: u64,
-    pub owner: String,
-    pub tag: String,
-    pub data: String,
-    pub checksum: String,
-}
-
-const DEFAULT_OWNER: &[u8] = b"SYSTEM";
-const DEFAULT_TAG: &[u8] = b"GLOBAL";
-
-fn checksum(data: &[u8]) -> String {
-    let s = digest(data);
-    let mut arr = [0u8; 32];
-    let bytes = s.as_bytes();
-    let len = bytes.len().min(32);
-    arr[..len].copy_from_slice(&bytes[..len]);
-    hex(&arr)
-}
-
-fn hex(data: &[u8]) -> String {
-    let hex = data.iter().map(|b| format!("{:02x}", b)).collect::<String>();
-    // println!("{}", hex);
-    hex
-}
-
-///// fn atob(data:String) -> String {
-/////     encode(data)
-///// }
-///// fn btoa(data:String) -> String {
-/////     let decoded = decode(&data).unwrap();
-/////     String::from_utf8(decoded.into()).unwrap()
-///// }
-fn timestamp() -> u64 {
-    std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .unwrap()
-        .as_secs()
-}
-
-fn timestamp128() -> u128 {
-    std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .unwrap()
-        .as_nanos()
-}
 
 impl Record {
     pub fn from_index(index: Index, data: Vec<u8>) -> Self {
@@ -66,7 +17,7 @@ impl Record {
             deleted: index.deleted,
             owner: index.owner,
             tag: index.tag,
-            checksum: checksum(&data[..]),
+            checksum: crate::checksum(&data[..]),
             data: String::from_utf8(data).unwrap(),
         }
     }
@@ -78,7 +29,7 @@ impl Record {
     }
     pub fn from_csv(serialized: String) -> Self {
         let parts = serialized.split(';').collect::<Vec<&str>>();
-        let id = parts[0].parse::<u128>().unwrap();
+        let (_,_,_,id) = crate::id128_parse(parts[0]);
         let created = parts[1].parse::<u64>().unwrap();
         let updated = parts[2].parse::<u64>().unwrap();
         let deleted = parts[3].parse::<u64>().unwrap();
@@ -88,7 +39,7 @@ impl Record {
         let _checksum = if parts.len() >= 8 {
             parts[7].to_string()
         } else {
-            checksum(data.as_bytes().clone())
+            crate::checksum(data.as_bytes().clone())
         };
         Self {
             id,
@@ -102,31 +53,31 @@ impl Record {
         }
     }
     pub fn new(data: &[u8]) -> Box<Self> {
-        let created = timestamp();
-
+        let created = crate::timestamp();
+        let (_,_,_,id)=id128_new();
         let s: Self = Self {
-            id: timestamp128(),
+            id,
             created,
             updated: 0,
             deleted: 0,
             owner: String::from_utf8(DEFAULT_OWNER.to_vec()).unwrap(),
             tag: str::from_utf8(DEFAULT_TAG).unwrap().into(),
             data: str::from_utf8(data).unwrap().into(),//atob(str::from_utf8(data).unwrap().into()),
-            checksum: checksum(data),
+            checksum: crate::checksum(data),
         };
         Box::new(s)
     }
 
     pub fn update(&mut self, data: &[u8]) -> &Self {
-        self.updated = timestamp();
+        self.updated = crate::timestamp();
 
-        self.checksum = checksum(data);
+        self.checksum = crate::checksum(data);
         self.data = str::from_utf8(data).unwrap().into();//atob(str::from_utf8(data).unwrap().into());
         self
     }
 
     pub fn delete(&mut self) -> &Self {
-        self.deleted = timestamp();
+        self.deleted = crate::timestamp();
         self
     }
     pub fn to_json(&self) -> String {
@@ -148,7 +99,8 @@ impl Record {
     pub fn get_data(&self) -> String {
         self.data.clone()//btoa(self.data.clone())
     }
-    pub fn id(&mut self, id: u128) -> Box<Self> {
+    pub fn id(&mut self, id128: u128) -> Box<Self> {
+        let (_,_,_,id) = id128_parse(id128.to_string().as_str());
         self.id = id;
         Box::new(self.to_owned())
     }
@@ -179,6 +131,7 @@ mod tests {
     use super::*;
     use std::time::Duration;
     use std::thread;
+    use crate::{checksum, Record};
 
     #[test]
     fn test_record_creation() {

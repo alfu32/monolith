@@ -1,26 +1,13 @@
 use serde::{Deserialize, Serialize};
 use std::io::Write;
-use crate::record::Record;
-
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
-pub struct Index {
-    pub id: u128,
-    pub created: u64,
-    pub updated: u64,
-    pub deleted: u64,
-    pub owner: String,
-    pub tag: String,
-    // pub(crate) checksum: String,
-    pub start: u64,
-    pub end: u64,
-}
+use crate::{Index, id128_parse, Record};
 
 impl Index {
     pub fn of(record: Record, at_start: u64) -> Index {
         let serialized = record.clone().data.clone();
         let end = at_start + (serialized.len() as u64);
         let index = Index {
-            id: record.id,
+            id: record.clone().id,
             created: record.created,
             updated: record.updated,
             deleted: record.deleted,
@@ -38,7 +25,7 @@ impl Index {
     }
     pub fn from_csv(serialized: String) -> Self {
         let parts = serialized.split(';').collect::<Vec<&str>>();
-        let id = parts[0].parse::<u128>().unwrap();
+        let (_,_,_,id) = id128_parse(parts[0]);
         let created = parts[1].parse::<u64>().unwrap();
         let updated = parts[2].parse::<u64>().unwrap();
         let deleted = parts[3].parse::<u64>().unwrap();
@@ -83,7 +70,7 @@ mod tests {
     fn test_from_json() {
         let serialized = r#"{ "id": 123, "created": 456, "updated": 789, "deleted": 159, "owner": "John", "tag": "test", "start": 100, "end": 200 }"#;
         let expected = Index {
-            id: 123,
+            id: "123".to_string(),
             created: 456,
             updated: 789,
             deleted: 159,
@@ -101,7 +88,7 @@ mod tests {
     fn test_from_csv() {
         let serialized = "123;456;789;159;John;test;100;200";
         let expected = Index {
-            id: 123,
+            id: "123".to_string(),
             created: 456,
             updated: 789,
             deleted: 159,
@@ -118,7 +105,7 @@ mod tests {
     #[test]
     fn test_to_csv() {
         let index = Index {
-            id: 123,
+            id: "123".to_string(),
             created: 456,
             updated: 789,
             deleted: 159,
@@ -136,7 +123,7 @@ mod tests {
     #[test]
     fn test_to_json() {
         let index = Index {
-            id: 123,
+            id: "123".to_string(),
             created: 456,
             updated: 789,
             deleted: 159,

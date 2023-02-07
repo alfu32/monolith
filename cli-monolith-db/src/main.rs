@@ -1,8 +1,6 @@
 // extern crate v8;
-
-
 use monolith_db::monolith::MonolithBackend;
-use monolith_db::record::Record;
+use monolith_db::{id128_parse, Record};
 
 use std::env;
 
@@ -42,17 +40,17 @@ fn main() -> Result<(), i32> {
         OP_READ => {
             println!("operation {}", _args.operation);
             let result = db.read_all().unwrap();
-            let id: u128 = _args.data.parse::<u128>().unwrap();
+            let (_,_,_,id) = id128_parse(_args.data.as_str());
 
-            result.iter().filter(|r| r.id == id).for_each(|x| println!("{:#?}", x.to_json()));
+            result.iter().filter(|r| (r.id == id)).for_each(|x| println!("{:#?}", x.to_json()));
         }
         OP_DELETE => {
             println!("operation {}", _args.operation);
 
             let result = db.read_all().unwrap();
-            let id: u128 = _args.data.parse::<u128>().unwrap();
+            let (_,_,_,id) = id128_parse(_args.data.as_str());
 
-            result.iter().filter(|r| r.id == id)
+            result.iter().filter(|r| (r.id == id ))
                 .for_each(|x| {
                     let mut y =x.clone();
                     y.delete();

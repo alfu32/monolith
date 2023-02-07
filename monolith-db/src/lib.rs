@@ -1,6 +1,88 @@
+use serde::{Deserialize, Serialize};
+use std::str;
+use serde_json::to_string;
+use sha256::digest;
+
 pub mod index;
 pub mod monolith;
 pub mod record;
+
+
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+pub struct Index {
+    pub id: String,
+    pub created: u64,
+    pub updated: u64,
+    pub deleted: u64,
+    pub owner: String,
+    pub tag: String,
+    // pub(crate) checksum: String,
+    pub start: u64,
+    pub end: u64,
+}
+
+#[derive(Serialize, Deserialize, /*Copy, */Clone, Debug, PartialEq)]
+pub struct Record {
+    pub id: String,
+    pub created: u64,
+    pub updated: u64,
+    pub deleted: u64,
+    pub owner: String,
+    pub tag: String,
+    pub data: String,
+    pub checksum: String,
+}
+
+const DEFAULT_OWNER: &[u8] = b"SYSTEM";
+const DEFAULT_TAG: &[u8] = b"GLOBAL";
+
+pub fn checksum(data: &[u8]) -> String {
+    let s = digest(data);
+    let mut arr = [0u8; 32];
+    let bytes = s.as_bytes();
+    let len = bytes.len().min(32);
+    arr[..len].copy_from_slice(&bytes[..len]);
+    hex(&arr)
+}
+
+pub fn hex(data: &[u8]) -> String {
+    let hex = data.iter().map(|b| format!("{:02x}", b)).collect::<String>();
+    // println!("{}", hex);
+    hex
+}
+
+///// fn atob(data:String) -> String {
+/////     encode(data)
+///// }
+///// fn btoa(data:String) -> String {
+/////     let decoded = decode(&data).unwrap();
+/////     String::from_utf8(decoded.into()).unwrap()
+///// }
+pub fn timestamp() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_secs()
+}
+
+pub fn timestamp128() -> u128 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_nanos()
+}
+pub fn id128_from_number(ts: u128) ->  (u64, u64, u128,String) {
+    let id=ts>>64;
+    let idl=(ts<<64)>>64;
+    (id as u64,idl as u64,ts,ts.to_string())
+}
+pub fn id128_new() -> (u64, u64, u128,String) {
+    id128_from_number(timestamp128())
+}
+
+pub fn id128_parse(i128string: &str) -> (u64, u64, u128,String) {
+    id128_from_number(i128string.parse::<u128>().unwrap())
+}
 
 #[cfg(test)]
 mod tests {
